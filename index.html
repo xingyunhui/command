@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>油田指挥图</title>
+    <!-- 引入 ECharts 文件 -->
+    <script src="echarts.js"></script>
+    <script src="jquery.js"></script>
+    <script src="henan.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width:100%;height:100%;position: absolute">
+
+</div>
+
+<script >
+    var myChart = echarts.init(document.getElementById('main'));
+    myChart.showLoading();
+
+    $.getJSON('result.json',function (json){
+        myChart.hideLoading();
+        myChart.setOption(option = {
+            backgroundColor: '#A4A4A4',
+            title: {
+               text: json.title,
+               textStyle: {
+                   color:  '#FAFAFA',
+                   fontSize: 30
+
+               }
+           },
+           geo: {
+               map: '河南',
+               label: {
+                   emphasis: {
+                       show: false
+                   }
+               },
+               itemStyle: {
+                   normal: {
+                       areaColor: '#848484',
+                       borderColor: '#585858',
+                       opacity: 0.9
+                   },
+                   emphasis: {
+                       areaColor: '#6E6E6E'
+
+                   }
+               }
+           },
+           animationDurationUpdate: 1500,
+           animationEasingUpdate: 'quinticInOut',
+           series: [
+               {
+                   type: 'graph',
+                   layout: 'none',
+                   coordinateSystem: 'geo',
+                   // progressiveThreshold: 700,
+                   data: json.nodes.map(function (node) {
+                           return {
+                               // x: node.x,
+                               // y: -node.y,
+                               value:[node.x,node.y],
+                               id: node.id,
+                               name: node.label,
+                               symbolSize: 5,
+                               itemStyle: {
+                                   normal: {
+                                       color: node.color,
+                                       opacity: 0.7
+                                   }
+                               }
+                           };
+                   }),
+                   edges: json.edges.map(function (edge) {
+                       return {
+                           source: edge.sourceID,
+                           target: edge.targetID
+                       };
+                   }),
+                   label: {
+                       emphasis: {
+                           position: 'right',
+                           show: true,
+                           opacity: 0.7
+                       },
+                       normal: {
+                           show: true,
+                           position: 'right',
+                           //fontWeight: 'lighter',
+                           fontSize: '8'
+                       },
+                   },
+                   roam: true,
+                   focusNodeAdjacency: true,
+                   lineStyle: {
+                       normal: {
+                           width: 0.0,
+                           curveness: 0.3,
+                           opacity: 0.7
+                       }
+                   }
+               }
+           ]
+       },true);
+   });
+
+</script>
+</body>
+</html>
