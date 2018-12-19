@@ -13,7 +13,7 @@ sys.setdefaultencoding('utf8')
 
 def getGeo():
 
-    data = xlrd.open_workbook('/Users/xingyunhui/Downloads/3qu-zb.xls')
+    data = xlrd.open_workbook('/Users/xingyunhui/Downloads/坐标转换.xlsx')
     file = open("geo.txt","w+")
 
     table = data.sheets()[0]
@@ -27,8 +27,8 @@ def getGeo():
 
     for i in range(1,nrows):
         name = table.cell(i,1).value
-        x = table.cell(i,4).value
-        y = table.cell(i,3).value
+        x = table.cell(i,8).value + "." + table.cell(i,9).value
+        y = table.cell(i,5).value + "." + table.cell(i,6).value
         print "name : %s, x : %s, y : %s " %(name,x,y)
         file.write("%s %s %s\n" %(name,x,y))
     file.close()
@@ -64,6 +64,7 @@ def getNode(geo):
         dict["id"] = data[0]
         dict["size"] = 10
         dict["color"] = getColor(data[0],table)
+        dict["focusNodeAdjacency"] = true
         list.append(dict)
     return list
 
