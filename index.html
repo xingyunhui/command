@@ -6,7 +6,8 @@
     <!-- 引入 ECharts 文件 -->
     <script src="echarts.js"></script>
     <script src="jquery.js"></script>
-    <script src="henan.js"></script>
+    <script src="bmap.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=lvjnuxP8YCiQeZbGnM5rrLWKaHYuQWZ9"></script>
 </head>
 <body>
 <div id="sh" style="text-align:right">
@@ -22,44 +23,147 @@
     var myChart = echarts.init(document.getElementById('main'));
     myChart.showLoading();
 
-    $.getJSON('result.json',function (json){
+    $.getJSON('result1.json',function (json){
         myChart.hideLoading();
         myChart.setOption(option = {
-            backgroundColor: '#A4A4A4',
             title: {
                text: json.title,
                textStyle: {
-                   color:  '#FAFAFA',
+                   color:  '#000000',
                    fontSize: 30
 
                }
            },
-           geo: {
-               map: '河南',
-               label: {
-                   emphasis: {
-                       show: false
-                   }
-               },
-               itemStyle: {
-                   normal: {
-                       areaColor: '#848484',
-                       borderColor: '#585858',
-                       opacity: 0.9
-                   },
-                   emphasis: {
-                       areaColor: '#6E6E6E'
-
-                   }
-               }
-           },
+            bmap: {
+                center: [115.38834, 35.666745],
+                zoom: 14,
+                roam: true,
+                mapStyle: {
+                    styleJson: [{
+                        'featureType': 'water',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'land',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#f3f3f3'
+                        }
+                    }, {
+                        'featureType': 'railway',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'highway',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#fdfdfd'
+                        }
+                    }, {
+                        'featureType': 'highway',
+                        'elementType': 'labels',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'geometry',
+                        'stylers': {
+                            'color': '#fefefe'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'geometry.fill',
+                        'stylers': {
+                            'color': '#fefefe'
+                        }
+                    }, {
+                        'featureType': 'poi',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'green',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'subway',
+                        'elementType': 'all',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'manmade',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'local',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'arterial',
+                        'elementType': 'labels',
+                        'stylers': {
+                            'visibility': 'off'
+                        }
+                    }, {
+                        'featureType': 'boundary',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#fefefe'
+                        }
+                    }, {
+                        'featureType': 'building',
+                        'elementType': 'all',
+                        'stylers': {
+                            'color': '#d1d1d1'
+                        }
+                    }, {
+                        'featureType': 'label',
+                        'elementType': 'labels.text.fill',
+                        'stylers': {
+                            'color': '#999999'
+                        }
+                    }]
+                }
+            },
+//           geo: {
+//               map: '河南',
+//               label: {
+//                   emphasis: {
+//                       show: false
+//                   }
+//               },
+//               itemStyle: {
+//                   normal: {
+//                       areaColor: '#848484',
+//                       borderColor: '#585858',
+//                       opacity: 0.9
+//                   },
+//                   emphasis: {
+//                       areaColor: '#6E6E6E'
+//
+//                   }
+//               }
+//           },
            animationDurationUpdate: 1500,
            animationEasingUpdate: 'quinticInOut',
            series: [
                {
                    type: 'graph',
                    layout: 'none',
-                   coordinateSystem: 'geo',
+                   coordinateSystem: 'bmap',
                    // progressiveThreshold: 700,
                    data: json.nodes.map(function (node) {
                            return {
@@ -73,10 +177,15 @@
                                itemStyle: {
                                    normal: {
                                        color: node.color,
-                                       opacity: 0.7
+                                       opacity: 0.5
+                                   },
+                                   emphasis: {
+                                       color: node.color,
+                                       opacity: 1,
+                                       symbolSize: 50
                                    }
                                }
-                           };
+                   };
                    }),
                    edges: json.edges.map(function (edge) {
                        return {
@@ -99,139 +208,6 @@
                    },
                    roam: true,
 
-                   lineStyle: {
-                       normal: {
-                           width: 0.0,
-                           curveness: 0.3,
-                           opacity: 0.7
-                       }
-                   }
-               },
-               {
-                   type: 'graph',
-                   layout: 'none',
-                   coordinateSystem: 'geo',
-                   // progressiveThreshold: 700,
-                   data: json.lines.map(function (node) {
-                       return {
-                           // x: node.x,
-                           // y: -node.y,
-                           value:[node.x,node.y],
-                           id: node.id,
-                           name: node.label,
-                           symbolSize: 0,
-                           focusNodeAdjacency: node.focusNodeAdjacency
-                       };
-                   }),
-                   edges: json.edges.map(function (edge) {
-                       return {
-                           source: edge.sourceID,
-                           target: edge.targetID
-                       };
-                   }),
-                   label: {
-                       emphasis: {
-                           position: 'right',
-                           show: true,
-                           opacity: 0.7
-                       },
-                       normal: {
-                           show: true,
-                           position: 'right',
-                           //fontWeight: 'lighter',
-                           fontSize: '8'
-                       },
-                   },
-                   roam: true,
-                   lineStyle: {
-                       normal: {
-                           width: 0.0,
-                           curveness: 0.3,
-                           opacity: 0.7
-                       }
-                   }
-               },
-               {
-                   type: 'graph',
-                   layout: 'none',
-                   coordinateSystem: 'geo',
-                   // progressiveThreshold: 700,
-                   data: json.lines.map(function (node) {
-                       return {
-                           // x: node.x,
-                           // y: -node.y,
-                           value:[node.x,node.y],
-                           id: node.id,
-                           name: node.label,
-                           symbolSize: 0,
-                           focusNodeAdjacency: node.focusNodeAdjacency
-                       };
-                   }),
-                   edges: json.edges.map(function (edge) {
-                       return {
-                           source: edge.sourceID,
-                           target: edge.targetID
-                       };
-                   }),
-                   label: {
-                       emphasis: {
-                           position: 'right',
-                           show: true,
-                           opacity: 0.7
-                       },
-                       normal: {
-                           show: true,
-                           position: 'right',
-                           //fontWeight: 'lighter',
-                           fontSize: '8'
-                       },
-                   },
-                   roam: true,
-                   lineStyle: {
-                       normal: {
-                           width: 0.0,
-                           curveness: 0.3,
-                           opacity: 0.7
-                       }
-                   }
-               },
-               {
-                   type: 'graph',
-                   layout: 'none',
-                   coordinateSystem: 'geo',
-                   // progressiveThreshold: 700,
-                   data: json.lines.map(function (node) {
-                       return {
-                           // x: node.x,
-                           // y: -node.y,
-                           value:[node.x,node.y],
-                           id: node.id,
-                           name: node.label,
-                           symbolSize: 0,
-                           focusNodeAdjacency: node.focusNodeAdjacency,
-
-                       };
-                   }),
-                   edges: json.edges.map(function (edge) {
-                       return {
-                           source: edge.sourceID,
-                           target: edge.targetID
-                       };
-                   }),
-                   label: {
-                       emphasis: {
-                           position: 'right',
-                           show: true,
-                           opacity: 0.7
-                       },
-                       normal: {
-                           show: true,
-                           position: 'right',
-                           //fontWeight: 'lighter',
-                           fontSize: '8'
-                       },
-                   },
-                   roam: true,
                    lineStyle: {
                        normal: {
                            width: 0.0,

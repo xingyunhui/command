@@ -4,7 +4,7 @@
 import xlrd
 import sys
 import json
-import chardet
+#import chardet
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -13,7 +13,7 @@ sys.setdefaultencoding('utf8')
 
 def getGeo():
 
-    data = xlrd.open_workbook('/Users/xingyunhui/Downloads/坐标转换.xlsx')
+    data = xlrd.open_workbook('/Users/heran/Downloads/坐标转换.xlsx')
     file = open("geo.txt","w+")
 
     table = data.sheets()[0]
@@ -25,10 +25,16 @@ def getGeo():
     print "rows total : " + str(nrows)
     print "cols total : " + str(ncols)
 
-    for i in range(1,nrows):
-        name = table.cell(i,1).value
-        x = table.cell(i,8).value + "." + table.cell(i,9).value
-        y = table.cell(i,5).value + "." + table.cell(i,6).value
+    for i in range(4,1508):
+        name = table.cell(i,0).value
+        print i
+        print table.cell(i,7).value
+        print table.cell(i,8).value
+        print table.cell(i,9).value
+        x = float(table.cell(i,7).value) + float(table.cell(i,8).value)/60 + float(table.cell(i,9).value)/3600
+        y = float(table.cell(i,4).value) + float(table.cell(i,5).value)/60 + float(table.cell(i,6).value)/3600
+        #x = (float)table.cell(i,8).value  + (float)table.cell(i,9).value/60 + (float)table.cell(i,9).value/3600
+        #y = (float)table.cell(i,5).value  + (float)table.cell(i,6).value/60 + (float)table.cell(i,9).value/3600
         print "name : %s, x : %s, y : %s " %(name,x,y)
         file.write("%s %s %s\n" %(name,x,y))
     file.close()
@@ -38,7 +44,7 @@ def getJson():
     json_result["title"] = u"油田指挥图"
     try:
        geo = open("geo.txt", "r+")
-       result = open("result.json","w+")
+       result = open("result1.json","w+")
        relation = open("wc.txt","r+")
        nodeList = getNode(geo)
        edgeList = getEdge(relation)
@@ -52,7 +58,7 @@ def getJson():
 
 def getNode(geo):
     list = []
-    colors = xlrd.open_workbook('/Users/xingyunhui/Downloads/井号颜色.XLS')
+    colors = xlrd.open_workbook('/Users/heran/Downloads/井号颜色.XLS')
     table = colors.sheets()[0]
     for line in geo:
         data = line.split(" ")
@@ -64,7 +70,7 @@ def getNode(geo):
         dict["id"] = data[0]
         dict["size"] = 10
         dict["color"] = getColor(data[0],table)
-        dict["focusNodeAdjacency"] = true
+        dict["focusNodeAdjacency"] = "true"
         list.append(dict)
     return list
 
@@ -97,7 +103,7 @@ def getColor(name,table):
 def readRealation():
 
     file = open('wc.txt',"a+")
-    data = xlrd.open_workbook('/Users/xingyunhui/Downloads/1.xlsx')
+    data = xlrd.open_workbook('/Users/heran/Downloads/1.xlsx')
     table = data.sheets()[0]
 
     nrows = table.nrows
@@ -130,6 +136,8 @@ def readRealation():
 
     file.close()
 
+
 if __name__ == "__main__":
     #readRealation()
     getJson()
+    #getGeo()
