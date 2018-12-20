@@ -23,7 +23,7 @@
     var myChart = echarts.init(document.getElementById('main'));
     myChart.showLoading();
 
-    $.getJSON('result1.json',function (json){
+    $.getJSON('result.json',function (json){
         myChart.hideLoading();
         myChart.setOption(option = {
             title: {
