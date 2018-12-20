@@ -141,5 +141,5 @@ def readRealation():
 
 if __name__ == "__main__":
     #readRealation()
-    getJson()
-    #getGeo()
+    #getJson()
+    getGeo()
