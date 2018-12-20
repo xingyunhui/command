@@ -31,10 +31,12 @@ def getGeo():
         print table.cell(i,7).value
         print table.cell(i,8).value
         print table.cell(i,9).value
-        x = float(table.cell(i,7).value) + float(table.cell(i,8).value)/60 + float(table.cell(i,9).value)/3600
-        y = float(table.cell(i,4).value) + float(table.cell(i,5).value)/60 + float(table.cell(i,6).value)/3600
+        #x = double(table.cell(i,7).value) + double(table.cell(i,8).value)/60 + double(table.cell(i,9).value)/3600
+        #y = double(table.cell(i,4).value) + double(table.cell(i,5).value)/60 + double(table.cell(i,6).value)/3600
         #x = (float)table.cell(i,8).value  + (float)table.cell(i,9).value/60 + (float)table.cell(i,9).value/3600
         #y = (float)table.cell(i,5).value  + (float)table.cell(i,6).value/60 + (float)table.cell(i,9).value/3600
+        x = table.cell(i,11).value
+        y = table.cell(i,10).value
         print "name : %s, x : %s, y : %s " %(name,x,y)
         file.write("%s %s %s\n" %(name,x,y))
     file.close()
