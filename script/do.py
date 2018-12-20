@@ -13,7 +13,7 @@ sys.setdefaultencoding('utf8')
 
 def getGeo():
 
-    data = xlrd.open_workbook('/Users/heran/Downloads/坐标转换.xlsx')
+    data = xlrd.open_workbook('C:/Users/heran01/Downloads/11.xlsx')
     file = open("geo.txt","w+")
 
     table = data.sheets()[0]
@@ -25,7 +25,7 @@ def getGeo():
     print "rows total : " + str(nrows)
     print "cols total : " + str(ncols)
 
-    for i in range(4,1508):
+    for i in range(4,902):
         name = table.cell(i,0).value
         print i
         print table.cell(i,7).value
@@ -58,7 +58,7 @@ def getJson():
 
 def getNode(geo):
     list = []
-    colors = xlrd.open_workbook('/Users/heran/Downloads/井号颜色.XLS')
+    colors = xlrd.open_workbook('C:/Users/heran01/Downloads/22.xls')
     table = colors.sheets()[0]
     for line in geo:
         data = line.split(" ")
