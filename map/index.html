@@ -23,7 +23,7 @@
     var myChart = echarts.init(document.getElementById('main'));
     myChart.showLoading();
 
-    $.getJSON('result.json',function (json){
+    $.getJSON('result_google.json',function (json){
         myChart.hideLoading();
         myChart.setOption(option = {
             title: {
@@ -138,25 +138,6 @@
                     }]
                 }
             },
-//           geo: {
-//               map: '河南',
-//               label: {
-//                   emphasis: {
-//                       show: false
-//                   }
-//               },
-//               itemStyle: {
-//                   normal: {
-//                       areaColor: '#848484',
-//                       borderColor: '#585858',
-//                       opacity: 0.9
-//                   },
-//                   emphasis: {
-//                       areaColor: '#6E6E6E'
-//
-//                   }
-//               }
-//           },
            animationDurationUpdate: 1500,
            animationEasingUpdate: 'quinticInOut',
            series: [
@@ -164,6 +145,7 @@
                    type: 'graph',
                    layout: 'none',
                    coordinateSystem: 'bmap',
+                   //symbol:'triangle',
                    // progressiveThreshold: 700,
                    data: json.nodes.map(function (node) {
                            return {
@@ -172,6 +154,7 @@
                                value:[node.x,node.y],
                                id: node.id,
                                name: node.label,
+                               symbol:node.symbol,
                                symbolSize: 15,
                                focusNodeAdjacency: node.focusNodeAdjacency,
                                itemStyle: {
@@ -180,6 +163,8 @@
                                        opacity: 0.5
                                    },
                                    emphasis: {
+                                       borderColor: node.color,
+                                       borderWidth: 5,
                                        color: node.color,
                                        opacity: 1
                                    }

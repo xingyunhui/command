@@ -4,6 +4,7 @@
 import xlrd
 import sys
 import json
+import math
 #import chardet
 
 reload(sys)
@@ -46,7 +47,7 @@ def getJson():
     json_result["title"] = u"油田指挥图"
     try:
        geo = open("geo.txt", "r+")
-       result = open("result.json","w+")
+       result = open("result_google.json","w+")
        relation = open("wc.txt","r+")
        nodeList = getNode(geo)
        edgeList = getEdge(relation)
@@ -60,21 +61,36 @@ def getJson():
 
 def getNode(geo):
     list = []
-    colors = xlrd.open_workbook('C:/Users/heran01/Downloads/22.xls')
+    colors = xlrd.open_workbook('/Users/heran/Downloads/22.XLS')
     table = colors.sheets()[0]
     for line in geo:
         data = line.split(" ")
         dict = {}
         dict["label"] = data[0]
         dict["attributes"] = {}
-        dict["x"] = data[1]
-        dict["y"] = data[2].replace('\n','')
+        dict["x"], dict["y"] = getBaiDuPosition(float(data[1]),float(data[2].replace('\n','')))
+        #dict["x"] = data[1]
+        #dict["y"] = data[2].replace('\n','')
         dict["id"] = data[0]
         dict["size"] = 10
-        dict["color"] = getColor(data[0],table)
+
         dict["focusNodeAdjacency"] = "true"
+        if '#' in data[0] :
+            dict['symbol'] = "triangle"
+            dict["color"] = '#000000'
+        else :
+            dict['symbol'] = "circle"
+            dict["color"] = getColor(data[0],table)
         list.append(dict)
     return list
+
+def getBaiDuPosition(x,y):
+    z = math.sqrt(x*x + y*y) + 0.00002 *math.sin(y* math.pi * 3000.0 / 180.0)
+    theta = math.atan2(y,x) + 0.000003*math.cos(x* math.pi * 3000.0 / 180.0)
+    baidux = z * math.cos(theta) + 0.0065
+    baiduy = z * math.sin(theta) + 0.006
+    return baidux,baiduy
+
 
 def getEdge(relation):
     list = []
@@ -141,5 +157,7 @@ def readRealation():
 
 if __name__ == "__main__":
     #readRealation()
-    #getJson()
-    getGeo()
+    getJson()
+    #getGeo()
+    #print getBaiDuPosition(1,2)
+
