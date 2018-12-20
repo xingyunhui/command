@@ -44,7 +44,7 @@ def getJson():
     json_result["title"] = u"油田指挥图"
     try:
        geo = open("geo.txt", "r+")
-       result = open("result1.json","w+")
+       result = open("result.json","w+")
        relation = open("wc.txt","r+")
        nodeList = getNode(geo)
        edgeList = getEdge(relation)
