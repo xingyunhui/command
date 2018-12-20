@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>油田指挥图</title>
+    <title>采油管理三区生产指挥图</title>
     <!-- 引入 ECharts 文件 -->
     <script src="echarts.js"></script>
     <script src="jquery.js"></script>
@@ -23,7 +23,7 @@
     var myChart = echarts.init(document.getElementById('main'));
     myChart.showLoading();
 
-    $.getJSON('result1.json',function (json){
+    $.getJSON('result.json',function (json){
         myChart.hideLoading();
         myChart.setOption(option = {
             title: {
