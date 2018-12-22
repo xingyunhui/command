@@ -14,8 +14,8 @@ sys.setdefaultencoding('utf8')
 
 def getGeo():
 
-    data = xlrd.open_workbook('C:/Users/heran01/Downloads/11.xlsx')
-    file = open("geo.txt","w+")
+    data = xlrd.open_workbook('/Users/heran/Downloads/111.xlsx')
+    file = open("geo1.txt","w+")
 
     table = data.sheets()[0]
 
@@ -46,9 +46,9 @@ def getJson():
     json_result = {}
     json_result["title"] = u"油田指挥图"
     try:
-       geo = open("geo.txt", "r+")
+       geo = open("geo1.txt", "r+")
        result = open("result_google.json","w+")
-       relation = open("wc.txt","r+")
+       relation = open("wc1.txt","r+")
        nodeList = getNode(geo)
        edgeList = getEdge(relation)
        json_result["nodes"] = nodeList
@@ -96,13 +96,14 @@ def getEdge(relation):
     list = []
     for line in relation:
         data = line.split(" ")
-        dict = {}
-        dict["sourceID"] = data[0]
-        dict["targetID"] = data[1].replace('\n','').decode('utf8')
+        if(len(data)==2):
+            dict = {}
+            dict["sourceID"] = data[0]
+            dict["targetID"] = data[1].replace('\n','').decode('utf8')
         #print eval("u"+"\'"+data[1].replace('\n','').decode('utf8')+"\'")
         #print dict
-        dict["size"] = 1
-        list.append(dict)
+            dict["size"] = 1
+            list.append(dict)
     return list
 
 def getColor(name,table):
@@ -120,22 +121,30 @@ def getColor(name,table):
 
 def readRealation():
 
-    file = open('wc.txt',"a+")
-    data = xlrd.open_workbook('/Users/heran/Downloads/1.xlsx')
+    file = open('wc1.txt',"a+")
+    data = xlrd.open_workbook('/Users/heran/Downloads/fanwei.xlsx')
     table = data.sheets()[0]
 
     nrows = table.nrows
     ncols = table.ncols
     print "rows total : " + str(nrows)
     print "cols total : " + str(ncols)
-    for i in range(2,nrows):
-        wells = table.cell(i,1).value
-        camera = table.cell(i,0).value
-        if wells == None:
-            if i == 87 or i == 91 or i == 96 or i == 101 or i == 103 or i == 106 or i == 108 or i == 116 or i == 120 or i == 142 or i == 152 or i == 154 or i == 159 or i == 161 or i == 163 or i == 166 or i == 171 or i == 179 or i == 184 or i == 192 or i == 197 or i == 199 or i == 205 or i == 207 or i == 209 or i == 214:
-                wells = table.cell(i-1,1).value
-            elif i == 109  or i == 117 or i == 164 or i == 172 :
-                wells = table.cell(i - 2 ,1).value
+    for i in range(1,nrows):
+
+        wells = table.cell(i,0).value
+        camera = table.cell(i,1).value
+        if(wells==''):
+            wells = table.cell(i-1,0).value
+            if(wells==''):
+                wells = table.cell(i-2,0).value
+                if(wells==''):
+                    wells = table.cell(i-3,0).value
+        #print wells,camera
+        # if wells == None:
+        #     if i == 87 or i == 91 or i == 96 or i == 101 or i == 103 or i == 106 or i == 108 or i == 116 or i == 120 or i == 142 or i == 152 or i == 154 or i == 159 or i == 161 or i == 163 or i == 166 or i == 171 or i == 179 or i == 184 or i == 192 or i == 197 or i == 199 or i == 205 or i == 207 or i == 209 or i == 214:
+        #         wells = table.cell(i-1,1).value
+        #     elif i == 109  or i == 117 or i == 164 or i == 172 :
+        #         wells = table.cell(i - 2 ,1).value
         if wells == None:
             file.write("  %s" %(camera))
         else:
@@ -156,7 +165,7 @@ def readRealation():
 
 
 if __name__ == "__main__":
-    #readRealation()
+    # readRealation()
     getJson()
     #getGeo()
     #print getBaiDuPosition(1,2)

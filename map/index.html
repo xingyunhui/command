@@ -35,7 +35,7 @@
                }
            },
             bmap: {
-                center: [115.38034, 35.670635],
+                center: [115.37018826897702, 35.693043866120616],
                 zoom: 14,
                 roam: true,
                 mapStyle: {
@@ -155,16 +155,16 @@
                                id: node.id,
                                name: node.label,
                                symbol:node.symbol,
-                               symbolSize: 15,
+                               symbolSize: 10,
                                focusNodeAdjacency: node.focusNodeAdjacency,
                                itemStyle: {
                                    normal: {
                                        color: node.color,
-                                       opacity: 0.5
+                                       opacity: 0.8
                                    },
                                    emphasis: {
                                        borderColor: node.color,
-                                       borderWidth: 5,
+                                       borderWidth: 7,
                                        color: node.color,
                                        opacity: 1
                                    }
@@ -179,15 +179,16 @@
                    }),
                    label: {
                        emphasis: {
-                           position: 'right',
-                           show: true,
-                           opacity: 0.7
+                           position: 'left',
+//                           show: false,
+//                           opacity: 1.0,
+                           fontSize: 0.1
                        },
                        normal: {
                            show: true,
                            position: 'right',
                            //fontWeight: 'lighter',
-                           fontSize: '8'
+                           fontSize: 13
                        },
                    },
                    roam: true,
