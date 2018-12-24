@@ -155,7 +155,7 @@
                                id: node.id,
                                name: node.label,
                                symbol:node.symbol,
-                               symbolSize: 10,
+                               symbolSize: 15,
                                focusNodeAdjacency: node.focusNodeAdjacency,
                                itemStyle: {
                                    normal: {
@@ -200,16 +200,65 @@
                            opacity: 0.7
                        }
                    }
+               },
+               {
+                   type: 'graph',
+                   layout: 'none',
+                   coordinateSystem: 'bmap',
+                   //symbol:'triangle',
+                   // progressiveThreshold: 700,
+                   data: json.nodes1.map(function (node) {
+                       return {
+                           // x: node.x,
+                           // y: -node.y,
+                           value:[node.x,node.y],
+                           id: node.id,
+                           name: node.label,
+                           symbol:node.symbol,
+                           symbolSize: 0.1,
+                           focusNodeAdjacency: false,
+                           itemStyle: {
+                               normal: {
+                                   color: node.color,
+                                   opacity: 0.8
+                               },
+                               emphasis: {
+                                   borderColor: node.color,
+                                   borderWidth: 7,
+                                   color: node.color,
+                                   opacity: 1
+                               }
+                           }
+                       };
+                   }),
+                   edges: json.edges.map(function (edge) {
+                       return {
+                           source: edge.sourceID,
+                           target: edge.targetID
+                       };
+                   }),
+                   roam: true,
+
+                   lineStyle: {
+                       normal: {
+                           width: 1,
+                           curveness: 0.0,
+                           opacity: 1
+                       }
+                   }
                }
            ]
        },true);
    });
     $('#btn_search').click(function search() {
         var search = document.getElementById('search').value;
-        myChart.dispatchAction({
-            type: 'highlight',
-            name: search
-        });
+        var op = myChart.getOption();
+        for(var i=0;i<op.series[0].data.length;i++){
+            if(op.series[0].data[i].id==search){
+                op.series[0].data[i].symbolSize = 30;
+            }
+        }
+        myChart.setOption(op,true);
     });
 </script>
 </body>

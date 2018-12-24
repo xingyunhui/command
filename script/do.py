@@ -14,7 +14,7 @@ sys.setdefaultencoding('utf8')
 
 def getGeo():
 
-    data = xlrd.open_workbook('/Users/heran/Downloads/111.xlsx')
+    data = xlrd.open_workbook('C:/Users/heran01/Documents/WeChat Files/heran18/Files/111.xlsx')
     file = open("geo1.txt","w+")
 
     table = data.sheets()[0]
@@ -29,17 +29,15 @@ def getGeo():
     for i in range(4,902):
         name = table.cell(i,0).value
         print i
-        print table.cell(i,7).value
-        print table.cell(i,8).value
-        print table.cell(i,9).value
         #x = double(table.cell(i,7).value) + double(table.cell(i,8).value)/60 + double(table.cell(i,9).value)/3600
         #y = double(table.cell(i,4).value) + double(table.cell(i,5).value)/60 + double(table.cell(i,6).value)/3600
         #x = (float)table.cell(i,8).value  + (float)table.cell(i,9).value/60 + (float)table.cell(i,9).value/3600
         #y = (float)table.cell(i,5).value  + (float)table.cell(i,6).value/60 + (float)table.cell(i,9).value/3600
-        x = table.cell(i,29).value
-        y = table.cell(i,28).value
+        x = table.cell(i,30).value
+        y = table.cell(i,29).value
+        pic = table.cell(i,28).value
         print "name : %s, x : %s, y : %s " %(name,x,y)
-        file.write("%s %s %s\n" %(name,x,y))
+        file.write("%s %s %s %s\n" %(name,x,y,pic))
     file.close()
 
 def getJson():
@@ -61,7 +59,7 @@ def getJson():
 
 def getNode(geo):
     list = []
-    colors = xlrd.open_workbook('/Users/heran/Downloads/22.XLS')
+    colors = xlrd.open_workbook('C:/Users/heran01/Downloads/22.XLS')
     table = colors.sheets()[0]
     for line in geo:
         data = line.split(" ")
@@ -73,13 +71,14 @@ def getNode(geo):
         #dict["y"] = data[2].replace('\n','')
         dict["id"] = data[0]
         dict["size"] = 10
+        dict["symbol"] = 'image://'+data[3].replace('\n','')
 
         dict["focusNodeAdjacency"] = "true"
         if '#' in data[0] :
-            dict['symbol'] = "triangle"
+            #dict['symbol'] = "triangle"
             dict["color"] = '#000000'
         else :
-            dict['symbol'] = "circle"
+            #dict['symbol'] = "circle"
             dict["color"] = getColor(data[0],table)
         list.append(dict)
     return list
@@ -122,7 +121,7 @@ def getColor(name,table):
 def readRealation():
 
     file = open('wc1.txt',"a+")
-    data = xlrd.open_workbook('/Users/heran/Downloads/fanwei.xlsx')
+    data = xlrd.open_workbook('C:/Users/heran01/Downloads/fanwei.xlsx')
     table = data.sheets()[0]
 
     nrows = table.nrows
@@ -165,7 +164,7 @@ def readRealation():
 
 
 if __name__ == "__main__":
-    # readRealation()
+    #readRealation()
     getJson()
     #getGeo()
     #print getBaiDuPosition(1,2)
